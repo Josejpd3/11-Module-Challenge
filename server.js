@@ -26,7 +26,7 @@ app.post('/api/notes', (req, res) => {
   const newNote = {
     title: req.body.title,
     text: req.body.text,
-    id: randomUUID(),
+    id: crypto(),
   }
   readAndAppend(newNote, dataLocation);
     const response = {
