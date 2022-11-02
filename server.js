@@ -21,6 +21,20 @@ const readFromFile = util.promisify(fs.readFile);
 app.get('/api/notes', (req, res) => {
   readFromFile(dataLocation).then((data) => res.json(JSON.parse(data)));
 });
+// POST Route for new note
+app.post('/api/notes', (req, res) => {
+  const newNote = {
+    title: req.body.title,
+    text: req.body.text,
+    id: randomUUID(),
+  }
+  readAndAppend(newNote, dataLocation);
+    const response = {
+      status: 'success',
+      body: newNote,
+    };
+    res.json(response);
+});
 
 app.listen(PORT, () =>
   console.log(`Example app listening at http://localhost:${PORT}`)
