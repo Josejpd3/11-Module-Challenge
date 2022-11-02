@@ -2,7 +2,7 @@ const express = require("express");
 const path = require('path');
 const fs = require('fs');
 const util = require('util');
-const { crypto } = require('crypto');
+const { randomUUID } = require('crypto');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -26,7 +26,7 @@ app.post('/api/notes', (req, res) => {
   const newNote = {
     title: req.body.title,
     text: req.body.text,
-    id: crypto(),
+    id: randomUUID(),
   }
   readAndAppend(newNote, dataLocation);
     const response = {
@@ -35,6 +35,22 @@ app.post('/api/notes', (req, res) => {
     };
     res.json(response);
 });
+
+const writeToFile = (destination, content) =>
+  fs.writeFile(destination, JSON.stringify(content, null, 4), (err) =>
+    err ? console.error(err) : console.info(`\nData written to ${destination}`)
+);
+const readAndAppend = (content, file) => {
+  fs.readFile(file, 'utf8', (err, data) => {
+    if (err) {
+      console.error(err);
+    } else {
+      const parsedData = JSON.parse(data);
+      parsedData.push(content);
+      writeToFile(file, parsedData);
+    }
+  });
+};
 
 app.listen(PORT, () =>
   console.log(`Example app listening at http://localhost:${PORT}`)
