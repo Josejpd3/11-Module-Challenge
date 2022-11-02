@@ -18,6 +18,10 @@ app.get('/notes', (req, res) => res.sendFile(path.join(__dirname, "/public/notes
 
 const readFromFile = util.promisify(fs.readFile);
 
+app.get('/api/notes', (req, res) => {
+  readFromFile(dataLocation).then((data) => res.json(JSON.parse(data)));
+});
+
 app.listen(PORT, () =>
   console.log(`Example app listening at http://localhost:${PORT}`)
 );
