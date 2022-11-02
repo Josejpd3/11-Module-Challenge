@@ -7,7 +7,7 @@ const { randomUUID } = require('crypto');
 const PORT = process.env.PORT || 3001;
 const app = express();
 
-const dataLocation = require("./db/db.json");
+const dataLocation = "./db/db.json";
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
